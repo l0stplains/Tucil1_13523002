@@ -7,10 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Block {
-    private final boolean[][] grid;
-    private final char symbol;
+    private boolean[][] grid;
+    private char symbol;
 
-    // Constructor: deep-copies the given rectangular boolean grid.
+    /**
+     * Constructor: deep-copies the given rectangular boolean grid.
+     *
+     * @param symbol the character that represents this block
+     * @param grid   a 2D boolean array where true indicates a filled cell
+     */
     public Block(char symbol, boolean[][] grid) {
         this.symbol = symbol;
         int rows = grid.length;
@@ -21,8 +26,55 @@ public class Block {
     }
 
     /**
+     * Returns a deep copy of the block's grid.
+     *
+     * @return a new 2D boolean array representing the block's grid
+     */
+    public boolean[][] getGrid() {
+        int rows = grid.length;
+        boolean[][] copy = new boolean[rows][];
+        for (int i = 0; i < rows; i++) {
+            copy[i] = grid[i].clone();
+        }
+        return copy;
+    }
+
+    /**
+     * Sets the block's grid with a deep copy of the provided grid.
+     *
+     * @param newGrid the new grid to set for this block
+     */
+    public void setGrid(boolean[][] newGrid) {
+        int rows = newGrid.length;
+        this.grid = new boolean[rows][];
+        for (int i = 0; i < rows; i++) {
+            this.grid[i] = newGrid[i].clone();
+        }
+    }
+
+    /**
+     * Returns the symbol representing this block.
+     *
+     * @return the block's symbol
+     */
+    public char getSymbol() {
+        return symbol;
+    }
+
+    /**
+     * Sets the symbol representing this block.
+     *
+     * @param symbol the new symbol to set
+     */
+    public void setSymbol(char symbol) {
+        this.symbol = symbol;
+    }
+
+    /**
      * Rotates the block 90° clockwise.
      * For a grid with dimensions r x c, the rotated grid has dimensions c x r.
+     *
+     * @return new rotated Block
      */
     public Block rotate() {
         int rows = grid.length;
@@ -38,6 +90,8 @@ public class Block {
 
     /**
      * Mirrors the block horizontally (flips left to right).
+     *
+     * @return new mirrored block
      */
     public Block mirror() {
         int rows = grid.length;
