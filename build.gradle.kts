@@ -15,6 +15,10 @@ application {
     mainClass.set("tucil_1_stima.Main")
 }
 
+tasks.named<JavaExec>("run") {
+    standardInput = System.`in`
+}
+
 javafx {
     version = "23.0.2"
     modules = listOf("javafx.controls", "javafx.fxml")

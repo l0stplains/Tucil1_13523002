@@ -1,4 +1,4 @@
-package tucil_1_stima.input;
+package tucil_1_stima.util;
 
 import tucil_1_stima.model.Block;
 import tucil_1_stima.model.Board;
@@ -13,25 +13,29 @@ public class InputHandler {
     /**
      * Parse and validate inputs from the test case file.
      *
-     * Expected Format:
-     *   N M P
-     *   S
-     *   [block definitions...]
+     * <p>Expected Format:</p>
+     * <pre>
+     * N M P
+     * S
+     * [block definitions...]
+     * </pre>
      *
-     * In this format, blocks do not have a separate header line.
+     * <p>In this format, blocks do not have a separate header line.
      * Instead, the very first character that appears in a block's definition is used as its symbol.
-     * Contiguous lines whose first non-space character is the same are grouped into one block.
+     * Contiguous lines whose first non-space character is the same are grouped into one block.</p>
      *
-     * For example:
+     * <p>For example:</p>
+     * <pre>
      * 5 5 2
      * DEFAULT
      * A A
      * AAA
-     *  BBB
-     *  BB
+     * BBB
+     * BB
+     * </pre>
      *
-     * In the example above, the first block is defined by the lines beginning with 'A'
-     * and the second block is defined by the lines beginning with 'B'.
+     * <p>In the example above, the first block is defined by the lines beginning with 'A'
+     * and the second block is defined by the lines beginning with 'B'.</p>
      *
      * @param filename the test case file name
      * @return a pair of the board and the list of blocks detected
@@ -65,6 +69,22 @@ public class InputHandler {
                 board = new Board(N, M);
             } else if (boardType.equals("CUSTOM")) {
                 board = new Board(N, M); // Implement custom board logic as needed
+                boolean[][] mask = new boolean[N][M];
+
+                // Assuming you have a scanner or similar to read the next N lines for the board mask:
+                for (int i = 0; i < N; i++) {
+                    String line = reader.readLine().trim(); // e.g., line could be "...X..."
+                    for (int j = 0; j < M; j++) {
+                        if(line.charAt(j) != '.' && line.charAt(j) != 'X') {
+                            throw new IllegalArgumentException("Invalid mask line: " + line);
+                        }
+                        // '.' means the cell is empty/available, so we set it to false.
+                        mask[i][j] = (line.charAt(j) == '.');
+                    }
+                }
+
+                // Apply the mask to the board
+                board.setMask(mask);
             } else if (boardType.equals("PYRAMID")) {
                 board = new Board(N, M); // Implement pyramid board logic as needed
             } else {
@@ -86,11 +106,21 @@ public class InputHandler {
             Character currentSymbol = null;
 
             for (int i = 0; i < allLines.size(); i++) {
-                String currentLine = allLines.get(i).trim();
-                if (currentLine.isEmpty()) continue; // Skip any accidental blank lines
+                String currentLine = allLines.get(i);
 
-                // The first non-space character is used as the block's symbol.
-                char lineSymbol = currentLine.charAt(0);
+                // Find the first non-space character to determine the block symbol
+                int firstNonSpaceIndex = 0;
+                while (firstNonSpaceIndex < currentLine.length() && Character.isWhitespace(currentLine.charAt(firstNonSpaceIndex))) {
+                    firstNonSpaceIndex++;
+                }
+
+                // If the line is entirely spaces, ignore it
+                if (firstNonSpaceIndex == currentLine.length()) {
+                    continue;
+                }
+
+                char lineSymbol = currentLine.charAt(firstNonSpaceIndex); // First non-space char
+
                 if (currentSymbol == null) {
                     // First block encountered.
                     currentSymbol = lineSymbol;

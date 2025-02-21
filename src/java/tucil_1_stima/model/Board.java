@@ -31,6 +31,24 @@ public class Board {
     }
 
     /**
+     * Returns the number of rows on the board.
+     *
+     * @return the number of rows
+     */
+    public int getRows() {
+        return rows;
+    }
+
+    /**
+     * Returns the number of rows on the board.
+     *
+     * @return the number of rows
+     */
+    public int getCols() {
+        return cols;
+    }
+
+    /**
      * Checks if the given block can be placed at position (row, col).
      * It verifies that every cell in the block that is "filled" (true)
      * maps to a valid board coordinate that is currently empty.
@@ -135,8 +153,9 @@ public class Board {
     public void printBoard() {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                String color = getAnsiColorForLetter(grid[i][j]);
-                System.out.print(color + grid[i][j] + RESET);
+                char c = grid[i][j];
+                String color = Character.isUpperCase(c) ? getAnsiColorForLetter(c) : "";
+                System.out.print(color + c + RESET);
             }
             System.out.println();
         }
