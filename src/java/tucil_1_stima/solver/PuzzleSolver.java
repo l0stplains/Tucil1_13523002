@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The {@code PuzzleSolver} class is responsible for solving a puzzle
+ * The {@code PuzzleSolver} class is responsible for solving a IQ Puzzle Pro
  * where blocks must be placed on a board while following specific constraints.
  *
  * <p>The solver uses a recursive backtracking approach to find a valid
@@ -24,7 +24,6 @@ public class PuzzleSolver {
 
     /**
      * Constructs a {@code PuzzleSolver} with a given board and list of blocks.
-     * Deep copies the Board
      *
      * @param board  the board on which the puzzle will be solved
      * @param blocks the list of blocks to be placed on the board
@@ -33,8 +32,9 @@ public class PuzzleSolver {
         this.board = board;
         this.blocks = blocks;
         this.solved = board.isFull();
-        this.blocksPermutation = new ArrayList<>();
         this.impossible = false;
+
+        this.blocksPermutation = new ArrayList<>();
         for (Block block : blocks) {
             this.blocksPermutation.add(Block.generateUnique(block));
         }
@@ -89,23 +89,23 @@ public class PuzzleSolver {
      * @return {@code true} if a valid solution is found, {@code false} otherwise
      */
     private boolean solve(int index) {
-        // Early stopping if it's already impossible to solve (see the next if to see the reason)
+        // Early stopping if it's already impossible to solve (see the next `if` block to see the reason)
         if (impossible){
             return false;
         }
 
         // If all blocks have been placed
         if (index == blocks.size()) {
-            // Impossible means that all blocks are not even enough to fill the board
+            // Impossible means that all blocks are not even enough to fill the board.
             impossible = !board.isFull();
+            // Returns true if and only if the board is filled completely and no remaining block (valid solution).
             return !impossible;
         }
         for (int i = 0; i < board.getRows(); i++) {
             for (int j = 0; j < board.getCols(); j++) {
-                // Generate unique permutation from a block (rotation and mirroring)
+                // Generate unique permutation from a block (rotation and mirroring).
                 List<Block> uniqueBlocks = blocksPermutation.get(index);
 
-                // TODO Check if even a block is already impossible or not (if it's not a heuristic way)
                 for (Block b : uniqueBlocks) {
                     casesExamined++;
                     if (board.placeBlock(b, i, j)) {
