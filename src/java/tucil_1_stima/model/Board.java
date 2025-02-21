@@ -179,6 +179,20 @@ public class Board {
     }
 
     /**
+     * Resets the board by clearing all placed blocks while preserving the boundary cells.
+     * That is, any cell that is not marked as a BLOCK_BOUNDARY is set to EMPTY.
+     */
+    public void reset() {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (grid[i][j] != BLOCK_BOUNDARY) {
+                    grid[i][j] = EMPTY;
+                }
+            }
+        }
+    }
+
+    /**
      * Applies a custom mask to the board.
      * The mask is provided as a 2D boolean array with the same dimensions as the board.
      * If mask[r][c] is true, that cell is set to {@link #BLOCK_BOUNDARY} to indicate it cannot be filled.

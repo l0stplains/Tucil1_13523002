@@ -3,6 +3,7 @@ package tucil_1_stima.solver;
 import tucil_1_stima.model.Block;
 import tucil_1_stima.model.Board;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,11 +16,15 @@ import java.util.List;
 public class PuzzleSolver {
     private final Board board;
     private final List<Block> blocks;
+    private final List<List<Block>> blocksPermutation;
     private long searchTime;
     private long casesExamined;
+    private boolean solved;
+    private boolean impossible;
 
     /**
      * Constructs a {@code PuzzleSolver} with a given board and list of blocks.
+     * Deep copies the Board
      *
      * @param board  the board on which the puzzle will be solved
      * @param blocks the list of blocks to be placed on the board
@@ -27,6 +32,12 @@ public class PuzzleSolver {
     public PuzzleSolver(Board board, List<Block> blocks) {
         this.board = board;
         this.blocks = blocks;
+        this.solved = board.isFull();
+        this.blocksPermutation = new ArrayList<>();
+        this.impossible = false;
+        for (Block block : blocks) {
+            this.blocksPermutation.add(Block.generateUnique(block));
+        }
     }
 
     /**
@@ -63,9 +74,11 @@ public class PuzzleSolver {
      * @return {@code true} if a solution is found, {@code false} otherwise
      */
     public boolean solve() {
-        searchTime = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis();
         casesExamined = 0;
-        return solve(0);
+        solved = solve(0);
+        searchTime = System.currentTimeMillis() - startTime;
+        return solved;
     }
 
     /**
@@ -76,17 +89,28 @@ public class PuzzleSolver {
      * @return {@code true} if a valid solution is found, {@code false} otherwise
      */
     private boolean solve(int index) {
+        // Early stopping if it's already impossible to solve (see the next if to see the reason)
+        if (impossible){
+            return false;
+        }
+
+        // If all blocks have been placed
         if (index == blocks.size()) {
-            return board.isFull();
+            // Impossible means that all blocks are not even enough to fill the board
+            impossible = !board.isFull();
+            return !impossible;
         }
         for (int i = 0; i < board.getRows(); i++) {
             for (int j = 0; j < board.getCols(); j++) {
-                List<Block> uniqueBlocks = Block.generateUnique(blocks.get(index));
+                // Generate unique permutation from a block (rotation and mirroring)
+                List<Block> uniqueBlocks = blocksPermutation.get(index);
+
+                // TODO Check if even a block is already impossible or not (if it's not a heuristic way)
                 for (Block b : uniqueBlocks) {
                     casesExamined++;
                     if (board.placeBlock(b, i, j)) {
                         if (solve(index + 1)) {
-                            searchTime = System.currentTimeMillis() - searchTime;
+                            solved = true;
                             return true;
                         } else {
                             board.removeBlock(b, i, j);
@@ -95,6 +119,7 @@ public class PuzzleSolver {
                 }
             }
         }
+        solved = false;
         return false;
     }
 }

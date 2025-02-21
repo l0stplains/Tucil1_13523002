@@ -35,18 +35,18 @@ public class MainDriver {
             }
         }
 
+        System.out.println("\n===== Board State =====");
+        board.printBoard();
+        System.out.println("=======================\n");
         // Start game loop
         boolean running = true;
         while (running) {
-            System.out.println("\n===== Board State =====");
-            board.printBoard();
-            System.out.println("=======================\n");
-
             System.out.println("Menu:");
             System.out.println("1. Print board");
             System.out.println("2. Print blocks");
             System.out.println("3. Solve");
-            System.out.println("4. Exit");
+            System.out.println("4. Reset board");
+            System.out.println("5. Exit");
             System.out.print("Choose an option: ");
 
             String choice = scanner.nextLine().trim();
@@ -68,13 +68,19 @@ public class MainDriver {
                     if (solver.solve()) {
                         System.out.println("Solved board: ");
                         solver.getBoard().printBoard();
-                        System.out.println("Time for search: " + solver.getSearchTime() + "ms");
-                        System.out.println("Number of cases examined: " + solver.getCasesExamined());
+
                     } else {
                         System.out.println("Puzzle failed.");
                     }
+                    System.out.println("Time for search: " + solver.getSearchTime() + "ms");
+                    System.out.println("Number of cases examined: " + solver.getCasesExamined());
+                    break;
                 }
                 case "4": {
+                    board.reset();
+                    break;
+                }
+                case "5": {
                     running = false;
                     break;
                 }
