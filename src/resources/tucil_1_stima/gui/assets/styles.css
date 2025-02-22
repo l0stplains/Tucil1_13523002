@@ -1,0 +1,19 @@
+/* styles.css */
+
+/* Set a dark background for the root */
+.root {
+    -fx-background-color: #121212;
+    -fx-text-fill: #ffffff;
+}
+
+/* Style buttons for dark mode */
+.button {
+    -fx-background-color: #333333;
+    -fx-text-fill: #ffffff;
+    -fx-border-color: #444444;
+}
+
+/* Optional: style other controls for dark mode */
+.label {
+    -fx-text-fill: #ffffff;
+}

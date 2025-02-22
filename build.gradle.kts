@@ -21,12 +21,14 @@ tasks.named<JavaExec>("run") {
 
 javafx {
     version = "23.0.2"
-    modules = listOf("javafx.controls", "javafx.fxml")
+    modules = listOf("javafx.controls", "javafx.fxml", "javafx.media")
 }
 
 dependencies {
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+    implementation("org.openjfx:javafx-controls:23")
+    implementation("org.openjfx:javafx-media:23")
 }
 
 tasks.test {

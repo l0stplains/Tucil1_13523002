@@ -1,6 +1,7 @@
 package tucil_1_stima;
 
 import tucil_1_stima.cli.MainDriver;
+import tucil_1_stima.gui.MainApp;
 
 // import java.util.Objects;
 
@@ -12,8 +13,8 @@ public class Main {
                 // MainDriver.main(args);
             // }
         }
-        // MainApp.show();
-        MainDriver.start();
+         MainApp.show();
+        // MainDriver.start();
     }
 
 }
