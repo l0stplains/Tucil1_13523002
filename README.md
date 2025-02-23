@@ -8,11 +8,11 @@
     IQ Puzzler Pro UwU is a Brute Force solver for the IQ Puzzler Pro game built in Java.
     <br />
     <br />
-    <a href="https://github.com/l0stplains/Tucil1_13523002/">Documentation</a>
+    <a href="https://l0stplains.github.io/Tucil1_13523002/">Documentation</a>
     ·
     <a href="https://github.com/l0stplains/Tucil1_13523002/releases/">Releases</a>
     ·
-    <a href="https://github.com/l0stplains/Tucil1_13523002/tree/main/doc/Tucil1_K1_13523002_Refki%20Alfarizi">Project Report (Bahasa Indonesia)</a>
+    <a href="https://github.com/l0stplains/Tucil1_13523002/tree/main/doc/Tucil1_K1_13523002_Refki%20Alfarizi.pdf">Project Report (Bahasa Indonesia)</a>
 </p>
 
 ## Project Overview
