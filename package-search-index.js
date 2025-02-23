@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"tucil_1_stima"},{"l":"tucil_1_stima.cli"},{"l":"tucil_1_stima.gui"},{"l":"tucil_1_stima.model"},{"l":"tucil_1_stima.solver"},{"l":"tucil_1_stima.util"}];updateSearchResults();
