@@ -48,7 +48,7 @@
    ```
 4. If you want to run it on CLI mode:
    ```bash
-   java -jar Tucil1_13523002.jar -jar
+   java -jar Tucil1_13523002.jar -cli
    ```
 > [!WARNING]
 > The CLI mode is missing some crucial features. Only use this mode for testing purposes only!
