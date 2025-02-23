@@ -7,11 +7,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The {@code PuzzleSolver} class is responsible for solving a IQ Puzzle Pro
+ * The {@code PuzzleSolver} class is responsible for solving an IQ Puzzle Pro
  * where blocks must be placed on a board while following specific constraints.
  *
  * <p>The solver uses a recursive backtracking approach to find a valid
  * configuration where all blocks fit on the board without overlapping.</p>
+ *
+ * <p>
+ *     If you are looking for speed just use C/C++. As said in Competitive Programming 4 Book
+ *     by Steven "the G.O.A.T" Salim <i>"A biased opinion: Use C++ instead of Java (slower than C++)"</i>
+ * </p>
+ *
+ * <p>
+ *     But even so, i tried my best to not do a silly mistake that can lead to a poor performance.
+ * </p>
+ *
  */
 public class PuzzleSolver {
     private final Board board;
@@ -98,12 +108,17 @@ public class PuzzleSolver {
         if (index == blocks.size()) {
             // Impossible means that all blocks are not even enough to fill the board.
             impossible = !board.isFull();
+//            if (impossible) {
+//                board.printBoard(); // for aing nga debug
+//            }
             // Returns true if and only if the board is filled completely and no remaining block (valid solution).
             return !impossible;
         }
+
+        // Else
         for (int i = 0; i < board.getRows(); i++) {
             for (int j = 0; j < board.getCols(); j++) {
-                // Generate unique permutation from a block (rotation and mirroring).
+                // Unique permutations from a block (mirror dan rotate)
                 List<Block> uniqueBlocks = blocksPermutation.get(index);
 
                 for (Block b : uniqueBlocks) {

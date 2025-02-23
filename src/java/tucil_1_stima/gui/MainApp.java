@@ -5,7 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
@@ -13,16 +13,29 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.io.IOException;
 
+/**
+ * This GUI app is heavily inspired by Tetr.io and osu!
+ * Props to them for making such a recognizable weeb and arcade style
+ *
+ * i'm not a weeb btw
+ */
 public class MainApp extends Application {
-
-    private MediaPlayer backgroundPlayer;
+    private Stage primaryStage;
+    private Scene mainScene;
+    public MediaPlayer backgroundPlayer;
+    private static final String STYLESHEET = "/tucil_1_stima/gui/assets/styles.css";
 
     @Override
     public void start(Stage stage) {
+        stage.initStyle(StageStyle.TRANSPARENT);
+        stage.getIcons().add(new Image(MainApp.class.getResourceAsStream("/tucil_1_stima/gui/assets/UwU_logo.png")));
+        primaryStage = stage;
+
         // welcome text
         Text splashText = new Text("Welcome to\n" + "IQ Puzzler Pro UwU");
 
@@ -45,6 +58,8 @@ public class MainApp extends Application {
         StackPane.setAlignment(splashText, Pos.CENTER); // CENTER TEXT
         splashLayout.setStyle("-fx-background-color: black;");
         Scene splashScene = new Scene(splashLayout, 1200, 675);
+        stage.setMinWidth(1200);
+        stage.centerOnScreen();
         stage.setScene(splashScene);
         stage.setTitle("Loading...");
         stage.show();
@@ -66,18 +81,27 @@ public class MainApp extends Application {
     private void loadMainScene(Stage stage) {
         try {
             // Load main FXML scene
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/tucil_1_stima/gui/hello-view.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 1200, 675);
-            scene.getStylesheets().add(getClass().getResource("/tucil_1_stima/gui/assets/styles.css").toExternalForm());
-            stage.setTitle("Hello!");
-            stage.setScene(scene);
-            stage.show();
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/tucil_1_stima/gui/main_menu.fxml"));
+            double currentWidth = stage.getWidth();
+            double currentHeight = stage.getHeight();
+            mainScene = new Scene(fxmlLoader.load(), currentWidth, currentHeight);
+            mainScene.getStylesheets().add(getClass().getResource(STYLESHEET).toExternalForm());
+            stage.setTitle("IQ Puzzler Pro UwU");
+            stage.setScene(mainScene);
+            stage.getScene().getWindow().setUserData(this); // for scene changing, keep same user data
 
             // Initialize and play background music
             initAudio();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    // Called by controllers to switch scenes
+    public void switchScene(Scene scene) {
+        scene.getStylesheets().add(getClass().getResource(STYLESHEET).toExternalForm());
+        primaryStage.setScene(scene);
+        primaryStage.setUserData(this);
     }
 
     private void initAudio() {
@@ -87,6 +111,7 @@ public class MainApp extends Application {
             Media bgMedia = new Media(bgMusicPath);
             backgroundPlayer = new MediaPlayer(bgMedia);
             backgroundPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+            backgroundPlayer.setVolume(0.2);
             backgroundPlayer.play();
         } catch (Exception e) {
             System.out.println("Error loading background music: " + e.getMessage());

@@ -21,7 +21,7 @@ tasks.named<JavaExec>("run") {
 
 javafx {
     version = "23.0.2"
-    modules = listOf("javafx.controls", "javafx.fxml", "javafx.media")
+    modules = listOf("javafx.controls", "javafx.fxml", "javafx.media", "javafx.swing")
 }
 
 dependencies {
@@ -29,10 +29,22 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter")
     implementation("org.openjfx:javafx-controls:23")
     implementation("org.openjfx:javafx-media:23")
+    implementation("org.openjfx:javafx-swing:23")
 }
 
 tasks.test {
     useJUnitPlatform()
+}
+
+tasks.jar {
+    manifest {
+        attributes(
+            "Main-Class" to "tucil_1_stima.Main"
+        )
+    }
+    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+    // Handle duplicate files
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 sourceSets {

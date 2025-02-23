@@ -8,7 +8,7 @@ public class Board {
     private final char[][] grid;
 
     // Constants for empty cells and boundaries.
-    public static final char EMPTY = 'X';
+    public static final char EMPTY = '#';
     public static final char BLOCK_BOUNDARY = '.';
 
     /**
@@ -46,6 +46,15 @@ public class Board {
      */
     public int getCols() {
         return cols;
+    }
+
+    /**
+     * Returns the reference to the grid.
+     *
+     * @return the grid
+     */
+    public char[][] getGrid() {
+        return grid;
     }
 
     /**

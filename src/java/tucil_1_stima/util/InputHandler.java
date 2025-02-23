@@ -34,8 +34,8 @@ public class InputHandler {
      * BB
      * </pre>
      *
-     * <p>In the example above, the first block is defined by the lines beginning with 'A'
-     * and the second block is defined by the lines beginning with 'B'.</p>
+     * <p>In the example above, the first block is defined by the lines with 'A'
+     * and the second block is defined by the lines with 'B'.</p>
      *
      * @param filename the test case file name
      * @return a pair of the board and the list of blocks detected
@@ -70,8 +70,6 @@ public class InputHandler {
             } else if (boardType.equals("CUSTOM")) {
                 board = new Board(N, M); // Implement custom board logic as needed
                 boolean[][] mask = new boolean[N][M];
-
-                // Assuming you have a scanner or similar to read the next N lines for the board mask:
                 for (int i = 0; i < N; i++) {
                     String line = reader.readLine().trim(); // e.g., line could be "...X..."
                     for (int j = 0; j < M; j++) {
@@ -85,8 +83,6 @@ public class InputHandler {
 
                 // Apply the mask to the board
                 board.setMask(mask);
-            } else if (boardType.equals("PYRAMID")) {
-                board = new Board(N, M); // Implement pyramid board logic as needed
             } else {
                 throw new IllegalArgumentException("Unknown board type: " + boardType);
             }

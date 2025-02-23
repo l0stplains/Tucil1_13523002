@@ -1,5 +1,9 @@
 package tucil_1_stima.gui;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import tucil_1_stima.util.AppState;
+
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
@@ -12,20 +16,23 @@ import javafx.scene.media.AudioClip;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 
+import java.io.IOException;
+
 public class MainController {
     @FXML
-    private Button actionButton1;
+    private Button btnSolve;
     @FXML
-    private Button actionButton2;
+    private Button btnInit;
     @FXML
-    private Button actionButton3;
+    private Button btnAbout;
     @FXML
-    private Button actionButton4;
+    private Button btnExit;
     @FXML
     private ImageView backgroundImageView;
 
     private AudioClip clickSound;
     private AudioClip hoverSound;
+    private AudioClip exitSound;
 
     @FXML
     public void initialize() {
@@ -50,21 +57,32 @@ public class MainController {
         // Initialize sound effects
         clickSound = new AudioClip(getClass().getResource("/tucil_1_stima/gui/assets/click.wav").toExternalForm());
         hoverSound = new AudioClip(getClass().getResource("/tucil_1_stima/gui/assets/hover.wav").toExternalForm());
+        exitSound = new AudioClip(getClass().getResource("/tucil_1_stima/gui/assets/aishiteru.wav").toExternalForm());
 
         // Load the custom font
         Font genkiFont = Font.loadFont(getClass().getResource("/tucil_1_stima/gui/assets/GenkiDesu.otf").toExternalForm(), 24);
         if(genkiFont != null) {
-            applyButtonFonts(actionButton1, genkiFont);
-            applyButtonFonts(actionButton2, genkiFont);
-            applyButtonFonts(actionButton3, genkiFont);
-            applyButtonFonts(actionButton4, genkiFont);
+            applyButtonFonts(btnSolve, genkiFont);
+            applyButtonFonts(btnInit, genkiFont);
+            applyButtonFonts(btnAbout, genkiFont);
+            applyButtonFonts(btnExit, genkiFont);
         }
 
         // Apply the same hover/click effects to all buttons
-        applyHoverEffects(actionButton1);
-        applyHoverEffects(actionButton2);
-        applyHoverEffects(actionButton3);
-        applyHoverEffects(actionButton4);
+        applyHoverEffects(btnSolve);
+        applyHoverEffects(btnInit);
+        applyHoverEffects(btnAbout);
+        applyHoverEffects(btnExit);
+
+        // Enable the Solve button only if initialization succeeded
+        if (!AppState.isInitialized()){
+            btnSolve.setDisable(true);
+            btnSolve.setOpacity(0.2);
+        }
+        else {
+            btnSolve.setDisable(false);
+        }
+
     }
     private void applyButtonFonts(Button button, Font font) {
         String fontFamily = font.getName(); // Check what the font's family name is.
@@ -115,7 +133,60 @@ public class MainController {
             if (clickSound != null) {
                 clickSound.play();
             }
-            System.out.println("Button clicked: " + button.getText());
         });
+    }
+
+    @FXML
+    private void handleSolve(MouseEvent event) {
+        if (btnSolve.isDisable()) return;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tucil_1_stima/gui/solve_menu.fxml"));
+            Scene solveScene = new Scene(loader.load(), btnSolve.getScene().getWidth(), btnSolve.getScene().getHeight());
+            MainApp mainApp = (MainApp) btnSolve.getScene().getWindow().getUserData();
+            mainApp.backgroundPlayer.stop();
+            mainApp.switchScene(solveScene);
+        } catch(IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleInit(MouseEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tucil_1_stima/gui/init_menu.fxml"));
+            Scene initScene = new Scene(loader.load(), btnInit.getScene().getWidth(), btnInit.getScene().getHeight());
+            MainApp mainApp = (MainApp) btnInit.getScene().getWindow().getUserData();
+            mainApp.backgroundPlayer.stop();
+            mainApp.switchScene(initScene);
+        } catch(IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleAbout(MouseEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tucil_1_stima/gui/about_menu.fxml"));
+            Scene aboutScene = new Scene(loader.load(), btnAbout.getScene().getWidth(), btnAbout.getScene().getHeight());
+            MainApp mainApp = (MainApp) btnAbout.getScene().getWindow().getUserData();
+            mainApp.backgroundPlayer.stop();
+            mainApp.switchScene(aboutScene);
+        } catch(IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleExit(MouseEvent event) {
+        MainApp mainApp = (MainApp) btnExit.getScene().getWindow().getUserData();
+        mainApp.backgroundPlayer.stop();
+        FadeTransition fade = new FadeTransition(Duration.seconds(1.5), btnExit.getScene().getRoot());
+        fade.setFromValue(1.0);
+        fade.setToValue(0.0);
+        fade.setOnFinished(e -> System.exit(0));
+        if (exitSound != null) {
+            exitSound.play();
+        }
+        fade.play();
     }
 }

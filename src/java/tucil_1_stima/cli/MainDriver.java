@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Main driver class for handling user interaction and game loop.
+ * Main driver class for handling user interaction and game loop for CLI mode.
  */
 public class MainDriver {
-    public static void start() {
+    public static void start(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Board board = null;
         List<Block> blocks = null;

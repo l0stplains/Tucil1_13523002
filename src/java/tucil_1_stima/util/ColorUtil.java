@@ -13,14 +13,41 @@ public final class ColorUtil {
      * @return the ANSI escape sequence for the color
      */
     public static String getAnsiColorForLetter(char letter) {
-        int index = Character.toUpperCase(letter) - 'A';
-        // Apply a deterministic permutation using a multiplier that's coprime with 26 (e.g., 7).
-        // It's applied such that neighboring letter will have more distinct color
-        int permutedIndex = (index * 7) % 26;
-        double hue = (permutedIndex / 26.0) * 330.0; // Use 330° to avoid collision at 360°
-        int[] rgb = hslToRgb(hue, 1.0, 0.5); // full saturation, medium lightness
+        int[] rgb = getRgbForLetter(letter);
         return String.format("\u001B[38;2;%d;%d;%dm", rgb[0], rgb[1], rgb[2]);
     }
+
+    /**
+     * Returns a hexadecimal color string in the form "#RRGGBB" based on the given letter.
+     * The color is generated deterministically based on the letter's position in the alphabet.
+     *
+     * @param letter the letter to generate a color for
+     * @return the hexadecimal color string
+     */
+    public static String getHexColorForLetter(char letter) {
+        int[] rgb = getRgbForLetter(letter);
+        return String.format("#%02X%02X%02X", rgb[0], rgb[1], rgb[2]);
+    }
+
+    /**
+     * Returns an array of the RGB value.
+     * The color is generated deterministically based on the letter's position in the alphabet.
+     *
+     * @param letter the letter to generate a color for
+     * @return the hexadecimal color string
+     */
+    public static int[] getRgbForLetter(char letter){
+        if  (!Character.isUpperCase(letter)){
+            return new int[]{164, 164, 164};
+        }
+        int index = Character.toUpperCase(letter) - 'A';
+        // Apply a deterministic permutation using a multiplier that's coprime with 26 (e.g., 7).
+        // This ensures neighboring letters will have more distinct colors.
+        int permutedIndex = (index * 7) % 26;
+        double hue = (permutedIndex / 26.0) * 330.0; // Using 330° to avoid collision at 360°
+        return hslToRgb(hue, 1.0, 0.5); // full saturation, medium lightness
+    }
+
 
     /**
      * Converts HSL color values to an RGB array.
