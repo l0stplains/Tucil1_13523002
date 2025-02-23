@@ -81,9 +81,17 @@
                         <Insets bottom="10.0" top="10.0" />
                      </padding>
                   </Button>
+                   <Button fx:id="saveTxtButton" disable="true" prefHeight="25.0" prefWidth="200.0" text="Save as TXT">
+                       <VBox.margin>
+                           <Insets bottom="10.0" top="10.0" />
+                       </VBox.margin>
+                       <padding>
+                           <Insets bottom="10.0" top="10.0" />
+                       </padding>
+                   </Button>
                       <ScrollPane prefWidth="180">
                           <content>
-                              <ListView fx:id="puzzleListView" minHeight="459.0" prefHeight="460.0" prefWidth="267.0" />
+                              <ListView fx:id="puzzleListView" minHeight="405.0" prefHeight="405.0" prefWidth="267.0" />
                           </content>
                      <VBox.margin>
                         <Insets top="10.0" />

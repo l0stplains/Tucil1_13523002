@@ -30,7 +30,9 @@ import tucil_1_stima.gui.BoardViewBuilder;
 import tucil_1_stima.gui.BlockViewBuilder;
 
 import javax.imageio.ImageIO;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
@@ -45,6 +47,7 @@ public class SolveController {
     @FXML private ProgressIndicator loadingIndicator;
     @FXML private Button backButton;
     @FXML private Button saveButton;
+    @FXML private Button saveTxtButton;
     @FXML private Button solveButton;
     @FXML private ImageView backgroundImageView;
     @FXML private ListView<String> puzzleListView; // puzzle config list
@@ -107,6 +110,7 @@ public class SolveController {
         caseTitle.setFont(genkiFont36);
         backButton.setFont(genkiFont24);
         saveButton.setFont(genkiFont24);
+        saveTxtButton.setFont(genkiFont24);
         solveButton.setFont(genkiFont24);
 
         timerTitle.setEffect(outline);
@@ -116,8 +120,10 @@ public class SolveController {
 
         // Effect
         applyHoverEffects(saveButton);
+        applyHoverEffects(saveTxtButton);
         applyHoverEffects(solveButton);
         saveButton.setOpacity(0.3);
+        saveTxtButton.setOpacity(0.3);
         solveButton.setOpacity(0.3);
 
         countdownLabel.setStyle("-fx-stroke: black; -fx-stroke-width: 2px;");
@@ -155,6 +161,7 @@ public class SolveController {
 //        }
 
         saveButton.setOnAction(e -> saveBoardAsPNG());
+        saveTxtButton.setOnAction(e -> saveBoardAsTXT());
         // Solve button triggers countdown
         solveButton.setOnAction(e -> {
             if(clickSound != null) clickSound.play();
@@ -164,9 +171,11 @@ public class SolveController {
 
     private void loadCurrentPuzzle() {
         saveButton.setDisable(false);
+        saveTxtButton.setDisable(false);
         solveButton.setDisable(false);
         solveButton.setOpacity(0.85);
         saveButton.setOpacity(0.85);
+        saveTxtButton.setOpacity(0.85);
         this.board = AppState.getBoard();
         this.blocks = AppState.getBlocks();
         if(board == null || blocks == null) {
@@ -313,6 +322,27 @@ public class SolveController {
             alert.showAndWait();
         } catch (IOException ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to save PNG: " + ex.getMessage());
+            alert.showAndWait();
+        }
+    }
+
+    private void saveBoardAsTXT() {
+        try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save Board as TXT");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("TXT Files", "*.txt"));
+            File file = fileChooser.showSaveDialog(boardPane.getScene().getWindow());
+            if (file != null) {
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+                    char[][] grid = board.getGrid();
+                    for (char[] row : grid) {
+                        writer.write(new String(row));
+                        writer.newLine();
+                    }
+                }
+            }
+        } catch (IOException ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to save TXT: " + ex.getMessage());
             alert.showAndWait();
         }
     }
