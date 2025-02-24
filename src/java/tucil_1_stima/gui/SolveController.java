@@ -339,6 +339,7 @@ public class SolveController {
                         writer.write(new String(row));
                         writer.newLine();
                     }
+                    writer.write(new String("Time Elapsed: " + config.getSearchTime() + "ms\nCase Examined: " + config.getCasesExamined() + "\n"));
                 }
             }
         } catch (IOException ex) {

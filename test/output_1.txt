@@ -1,0 +1,7 @@
+ABBCC
+AABDC
+EEDDF
+EEEFF
+GGGFF
+Time Elapsed: 17ms
+Case Examined: 195679

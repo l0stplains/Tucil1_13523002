@@ -1,0 +1,7 @@
+AAABBCC
+ABBBCCD
+AEIIIDD
+FEEEDDH
+FFGGGGH
+Time Elapsed: 170ms
+Case Examined: 4759461

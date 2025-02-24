@@ -1,0 +1,7 @@
+...A...
+.AAABB.
+CCCCBBB
+.DCEEE.
+...E...
+Time Elapsed: 0ms
+Case Examined: 22211

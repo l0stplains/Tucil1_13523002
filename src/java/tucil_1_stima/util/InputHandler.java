@@ -61,6 +61,10 @@ public class InputHandler {
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException("Variable not parseable on the first line of file: " + filename);
             }
+            // Validate that the number of blocks read matches P, just in case.
+            if (P < 1 || N < 1 || M < 1) {
+                throw new IllegalArgumentException("Wrong number of variables on the first line of file: " + filename);
+            }
 
             // Parse the board type (second line) and initialize the board.
             String boardType = reader.readLine().trim();
@@ -72,6 +76,9 @@ public class InputHandler {
                 boolean[][] mask = new boolean[N][M];
                 for (int i = 0; i < N; i++) {
                     String line = reader.readLine().trim(); // e.g., line could be "...X..."
+                    if(line.length() != M){
+                        throw new IllegalArgumentException("Board size and the given custom board doesn't match: " + filename);
+                    }
                     for (int j = 0; j < M; j++) {
                         if(line.charAt(j) != '.' && line.charAt(j) != 'X') {
                             throw new IllegalArgumentException("Invalid mask line: " + line);
@@ -141,6 +148,14 @@ public class InputHandler {
             // Validate that the number of blocks read matches P, just in case.
             if (blocks.size() != P) {
                 throw new IllegalArgumentException("Expected " + P + " blocks, but found " + blocks.size());
+            }
+
+            // Validate to ensure that every block has a unique symbol.
+            Set<Character> uniqueSymbols = new HashSet<>();
+            for (Block b : blocks) {
+                if (!uniqueSymbols.add(b.getSymbol())) {
+                    throw new IllegalArgumentException("Duplicate block symbol found: " + b.getSymbol());
+                }
             }
 
             return new Pair<>(board, blocks);

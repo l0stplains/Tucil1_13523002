@@ -43,7 +43,7 @@
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <Label fx:id="caseTitle" text="Case Checked:">
+                  <Label fx:id="caseTitle" text="Case Examined:">
                      <font>
                         <Font size="24.0" />
                      </font>
